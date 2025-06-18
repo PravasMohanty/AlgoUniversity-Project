@@ -24,6 +24,10 @@ const UserSchema = new Schema({
     isAdmin:{
         type: Boolean,
         default: false
+    },
+    problemSolved:{
+        type: Number,
+        default: 0
     }
 
 });

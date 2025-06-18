@@ -11,12 +11,12 @@ const Login = async (req, res) => {
     if (!username || !password) {
         return res.status(404).send("Please Enter all Fields");
     }
-
+    // checking if userobject exists
     const existingUser = await User.findOne({ username });
     if (!existingUser) {
         return res.status(400).send("User Not Found");
     }
-
+    // checking validity
     const isMatch = await bcrypt.compare(password, existingUser.password);
     if (!isMatch) {
         return res.status(400).send("Invalid Credentials");
@@ -52,7 +52,7 @@ const Login = async (req, res) => {
 
 const Register = async (req, res) => {
     try {
-        const { name, username, email, password } = req.body;
+        const { name, username, email, password , adminKey } = req.body;
 
         if (!name || !username || !email || !password) {
             return res.status(400).send("Please enter all fields");
@@ -65,6 +65,7 @@ const Register = async (req, res) => {
 
         const hashedPass = await bcrypt.hash(password, 10);
 
+        // Using the DB to create n store a new userobj
         const UserObj = new User({
             name,
             username,
@@ -72,8 +73,13 @@ const Register = async (req, res) => {
             password: hashedPass
         });
 
+        if (adminKey === process.env.MASTER_ADMIN_CODE) {
+            UserObj.isAdmin = true;
+        }        
+
         await UserObj.save();
 
+        // generating access token for the user just created
         const regToken = jwt.sign(
             {
                 id: UserObj._id,

@@ -3,6 +3,7 @@ const dotenv = require('dotenv')
 const cors = require('cors');
 const authRouter = require('../routes/authRouter');
 const DBConnection = require('../database/db');
+const userRouter = require('../routes/userRoutes');
 
 dotenv.config()
 const app = express()
@@ -14,7 +15,7 @@ app.use(express.urlencoded({extended:true}))
 
 
 app.use("/auth",authRouter);
-// app.use("/user",userRouter);
+app.use("/user",userRouter);
 
 
 app.listen(process.env.PORT , ()=>{
