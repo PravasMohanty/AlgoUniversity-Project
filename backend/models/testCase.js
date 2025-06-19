@@ -1,17 +1,17 @@
 const mongoose = require('mongoose')
 const Schema = mongoose.Schema
 
-const testCaseSchema = new Schema({
+const TestCaseSchema = new Schema({
   input: {
     type: String,
     required: true
   },
-  expectedOutput: {
+  output: {
     type: String,
     required: true
   },
   questionId: {
-    type: mongoose.Schema.Types.ObjectId,
+    type: Schema.Types.ObjectId,
     ref: 'Question', // Reference to Question collection
     required: true
   },
@@ -21,4 +21,4 @@ const testCaseSchema = new Schema({
   }
 })
 
-module.exports = mongoose.model('TestCase', testCaseSchema)
+module.exports = mongoose.model('TestCase', TestCaseSchema)
