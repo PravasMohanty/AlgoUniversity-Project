@@ -3,8 +3,6 @@ const Question = require('../models/Question');
 
 
 
-
-
 const createQuestion = async (req, res) => {
     try {
         // Only allow admins to create questions
@@ -66,8 +64,34 @@ const getQuestionById = async (req, res) => {
     }
 }
 
+const deleteQuestion = async (req, res) => {
+    try {
+        if(!req.user || !req.user.isAdmin) {
+            return res.status(403).json({ success: false, message: "Forbidden: Admins only" });
+        }
+
+        const q_Id = req.params.id;
+        const question = await Question.findById(q_Id);
+
+        if (!question) {
+            return res.status(404).json({ success: false, message: "Question not found" });
+        }
+
+        await Question.findByIdAndDelete(q_Id);
+        await TestCase.deleteMany({ questionId: q_Id });
+
+        res.status(200).json({ success: true, message: "Question deleted successfully" });
+        
+
+    } catch (error) {
+        console.error("Delete Error:", error.message);
+        res.status(500).json({ success: false, message: "Server Error" });
+    }
+}
+
 module.exports = {
     getAllQuestions,
     getQuestionById,
-    createQuestion
+    createQuestion,
+    deleteQuestion
 }
