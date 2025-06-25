@@ -1,5 +1,5 @@
 const express = require('express');
-const { createQuestion, getAllQuestions, getQuestionById } = require('../controllers/questionController');
+const { createQuestion, getAllQuestions, getQuestionById, deleteQuestion  } = require('../controllers/questionController');
 const verifyToken = require('../middleware/authMiddleware');
 const verifyAdmin = require('../middleware/adminMiddleware');
 const QuestRouter = express.Router();

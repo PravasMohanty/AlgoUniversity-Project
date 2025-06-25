@@ -15,7 +15,12 @@
             type: [String],
             enum: ["Array", "Graph", "DP", "Greedy", "Math", "Binary Search" , "Prefix Sum" , "Stack" , "Queue","Linked List","Two-Pointer" , "Sliding Window" , "Bit Manipulation" , "Recursion" , "Backtracking" , "Trie", "Tree"],
             required: true
-        }
+        },
+        slug: {
+            type: String,
+            required: true,
+            unique: true
+          }
     })
 
     module.exports = mongoose.model('Question', QuestionSchema)
