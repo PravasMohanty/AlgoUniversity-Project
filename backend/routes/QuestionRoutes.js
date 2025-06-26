@@ -9,6 +9,7 @@ const {
 
 const verifyToken = require('../middleware/authMiddleware');
 const verifyAdmin = require('../middleware/adminMiddleware');
+const { submitCode } = require('../controllers/submissionController');
 
 const QuestRouter = express.Router();
 
@@ -19,10 +20,10 @@ const QuestRouter = express.Router();
 QuestRouter.get("/", getAllQuestions);
 
 // Get single question by slug (practice view)
-QuestRouter.get("/practice/:slug", getQuestionBySlug);
+QuestRouter.get("/:slug", getQuestionBySlug);
 
 // Future: Submit code for a question
-// QuestRouter.post("/practice/:slug/submission", submitCode);
+QuestRouter.post("/:slug/submission", verifyToken , submitCode);
 
 
 //  =================== ADMIN ROUTES ===================
@@ -32,6 +33,5 @@ QuestRouter.post("/admin/create", verifyToken, verifyAdmin, createQuestion);
 
 // Delete a question by ID (admin only)
 QuestRouter.delete("/admin/delete/:id", verifyToken, verifyAdmin, deleteQuestion);
-
 
 module.exports = QuestRouter;

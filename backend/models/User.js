@@ -21,14 +21,20 @@ const UserSchema = new Schema({
         required: true,
         minlength: 8
     },
-    isAdmin:{
+    isAdmin: {
         type: Boolean,
         default: false
     },
-    problemSolved:{
+    problemSolved: {
         type: Number,
         default: 0
-    }
+    },
+    solved: [
+        {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'Question'
+        }
+    ]
 
 });
 
