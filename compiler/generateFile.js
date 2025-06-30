@@ -1,41 +1,51 @@
+// Import required modules
 const fs = require('fs')
 const path = require("path")
-const {v4 : uuid} = require("uuid");
+const { v4: uuid } = require("uuid");
 
-const dirCodes = path.join(__dirname,'codes')
+// Directory where code files will be stored
+const dirCodes = path.join(__dirname, 'codes')
 
+// Create the directory if it doesn't exist
 if (!fs.existsSync(dirCodes)) {
-    fs.mkdirSync(dirCodes , { recursive: true });
+  fs.mkdirSync(dirCodes, { recursive: true });
+}
+
+// Function to generate a code file for the given language and code
+const generateFile = (language, code) => {
+
+  // Map supported language keys to file extensions
+  const langMap = {
+    'cpp': 'cpp',
+    'java': 'java',
+    'py': 'py'
   }
 
-const generateFile = (language, code) =>{
+  // Get the file extension for the given language
+  const extension = langMap[language]
 
+  // Throw an error if the language is not supported
+  if (!extension) {
+    throw new Error("Unsupported language: " + language);
+  }
 
-    const langMap = {
-    'C++' : 'cpp',
-    'Java' : 'java',
-    'Python' : 'py'
-    }
+  // Generate a unique job ID and file name
+  const JobId = uuid()
+  const fileName = `${JobId}.${extension}`
+  const filePath = path.join(dirCodes, fileName);
 
-    const extension = langMap[language]
-
-    if (!extension) {
-        throw new Error("Unsupported language: " + language);
-      }
-
-    const JobId = uuid()
-    const fileName = `${JobId}.${extension}`
-    const filePath = path.join(dirCodes, fileName);
-
-    try {
-        fs.writeFileSync(filePath, code);
+  try {
+    // Write the code to the file
+    fs.writeFileSync(filePath, code);
     console.log(JobId);
     return filePath
-    } 
-    catch (error) {
-        console.log("Failed to write File",error);
-        throw new Error("Code file generation failed"); 
-    }
-} 
+  }
+  catch (error) {
+    // Log and throw an error if file writing fails
+    console.log("Failed to write File", error);
+    throw new Error("Code file generation failed");
+  }
+}
 
+// Export the generateFile function
 module.exports = generateFile;

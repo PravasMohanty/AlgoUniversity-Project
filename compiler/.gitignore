@@ -1,0 +1,30 @@
+# Dependencies
+/node_modules
+
+# Environment Variables
+.env
+.env.*
+!.env.example
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Generated code files from submissions
+# These are temporary and should not be versioned.
+/codes/
+
+# Compiled output files
+# These are generated at runtime.
+/outputs/
+
+# Editor directories and files
+.vscode
+.idea
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw? 
