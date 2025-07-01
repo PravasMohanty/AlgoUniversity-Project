@@ -15,6 +15,7 @@ import {
     X,
     LogOut
 } from 'lucide-react';
+import { Link } from 'react-router-dom';
 
 const Navbar = ({ isNavbarVisible, onLoginClick, hideLoginButton = false, user, onLogout }) => {
     // ========================================
@@ -33,7 +34,8 @@ const Navbar = ({ isNavbarVisible, onLoginClick, hideLoginButton = false, user, 
         {
             name: 'Questions',
             icon: <HelpCircle className="w-4 h-4" />,
-            description: 'Browse coding questions and challenges'
+            description: 'Browse coding questions and challenges',
+            href: '/questions',
         },
         {
             name: 'Contests',
@@ -101,8 +103,8 @@ const Navbar = ({ isNavbarVisible, onLoginClick, hideLoginButton = false, user, 
 
     return (
         <nav className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ease-in-out ${shouldShowNavbar
-                ? 'opacity-100 translate-y-0'
-                : 'opacity-0 -translate-y-full'
+            ? 'opacity-100 translate-y-0'
+            : 'opacity-0 -translate-y-full'
             }`}>
             {/* Navigation Bar Container */}
             <div className="bg-black/90 border-b border-green-400/20">
@@ -112,16 +114,16 @@ const Navbar = ({ isNavbarVisible, onLoginClick, hideLoginButton = false, user, 
                     <div className="flex justify-between items-center h-16">
 
                         {/* Logo Section */}
-                        <div className="flex items-center space-x-3">
+                        <Link to="/" className="flex items-center space-x-3 group/logo">
                             <img
                                 src="/logo.png"
                                 alt="CodeForge Logo"
                                 className="w-8 h-8 object-contain"
                             />
-                            <span className="text-xl font-bold bg-gradient-to-r from-green-400 to-emerald-400 bg-clip-text text-transparent">
+                            <span className="text-xl font-bold bg-gradient-to-r from-green-400 to-emerald-400 bg-clip-text text-transparent group-hover/logo:underline">
                                 CodeForge
                             </span>
-                        </div>
+                        </Link>
 
                         {/* Desktop Navigation Menu */}
                         <div className="hidden md:flex items-center space-x-6">
@@ -133,12 +135,19 @@ const Navbar = ({ isNavbarVisible, onLoginClick, hideLoginButton = false, user, 
                                     onMouseLeave={() => setHoveredNav(null)}
                                 >
                                     {/* Navigation Item Button */}
-                                    <button className="flex items-center space-x-1 text-gray-300 hover:text-green-400 transition-colors duration-200 font-medium py-2">
-                                        {item.icon}
-                                        <span>{item.name}</span>
-                                        <ChevronDown className="w-3 h-3 transition-transform duration-200 group-hover:rotate-180" />
-                                    </button>
-
+                                    {item.href ? (
+                                        <Link to={item.href} className="flex items-center space-x-1 text-gray-300 hover:text-green-400 transition-colors duration-200 font-medium py-2">
+                                            {item.icon}
+                                            <span>{item.name}</span>
+                                            <ChevronDown className="w-3 h-3 transition-transform duration-200 group-hover:rotate-180" />
+                                        </Link>
+                                    ) : (
+                                        <button className="flex items-center space-x-1 text-gray-300 hover:text-green-400 transition-colors duration-200 font-medium py-2">
+                                            {item.icon}
+                                            <span>{item.name}</span>
+                                            <ChevronDown className="w-3 h-3 transition-transform duration-200 group-hover:rotate-180" />
+                                        </button>
+                                    )}
                                     {/* Dropdown Tooltip */}
                                     {hoveredNav === index && (
                                         <div className="absolute top-full left-0 mt-2 w-48 bg-gray-900/95 border border-green-400/30 rounded-lg shadow-xl shadow-green-400/10 p-3">
@@ -180,12 +189,12 @@ const Navbar = ({ isNavbarVisible, onLoginClick, hideLoginButton = false, user, 
                             ) : (
                                 // Login Button (if not hidden)
                                 !hideLoginButton && (
-                                    <button
-                                        onClick={handleLoginClick}
+                                    <Link
+                                        to="/auth/register"
                                         className="bg-gradient-to-r from-green-400 to-emerald-500 text-black px-4 py-2 rounded-full font-semibold hover:scale-105 hover:shadow-lg hover:shadow-green-400/30 transition-all duration-200"
                                     >
                                         Login / SignUp
-                                    </button>
+                                    </Link>
                                 )
                             )}
                         </div>
@@ -206,10 +215,21 @@ const Navbar = ({ isNavbarVisible, onLoginClick, hideLoginButton = false, user, 
 
                                 {/* Mobile Navigation Items */}
                                 {navItems.map((item) => (
-                                    <div key={item.name} className="flex items-center space-x-3 text-gray-300 hover:text-green-400 transition-colors px-4 py-2">
-                                        {item.icon}
-                                        <span className="font-medium">{item.name}</span>
-                                    </div>
+                                    item.href ? (
+                                        <Link
+                                            key={item.name}
+                                            to={item.href}
+                                            className="flex items-center space-x-3 text-gray-300 hover:text-green-400 transition-colors px-4 py-2"
+                                        >
+                                            {item.icon}
+                                            <span className="font-medium">{item.name}</span>
+                                        </Link>
+                                    ) : (
+                                        <div key={item.name} className="flex items-center space-x-3 text-gray-300 hover:text-green-400 transition-colors px-4 py-2">
+                                            {item.icon}
+                                            <span className="font-medium">{item.name}</span>
+                                        </div>
+                                    )
                                 ))}
 
                                 {/* Mobile Authentication Section */}
@@ -244,12 +264,12 @@ const Navbar = ({ isNavbarVisible, onLoginClick, hideLoginButton = false, user, 
                                     // Login Button Mobile (if not hidden)
                                     !hideLoginButton && (
                                         <div className="pt-3 border-t border-gray-700/50 mt-3">
-                                            <button
-                                                onClick={handleLoginClick}
+                                            <Link
+                                                to="/auth/register"
                                                 className="w-full bg-gradient-to-r from-green-400 to-emerald-500 text-black px-4 py-2 rounded-full font-semibold hover:scale-105 transition-all duration-200"
                                             >
                                                 Login / SignUp
-                                            </button>
+                                            </Link>
                                         </div>
                                     )
                                 )}

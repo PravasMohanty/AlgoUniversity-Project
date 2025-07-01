@@ -6,14 +6,14 @@ import {
     ArrowLeft, Key, User, Loader2
 } from 'lucide-react';
 import apiService from '../src/services/api';
+import { Link } from 'react-router-dom';
 
 // ---------------------------
 // Login Component
 // ---------------------------
-const Login = ({ onBack, onLoginSuccess }) => {
+const Login = ({ onBack, onLoginSuccess, isRegister = false }) => {
     // State declarations
     const [showPassword, setShowPassword] = useState(false);   // Toggles password visibility
-    const [isLogin, setIsLogin] = useState(false);             // Toggles between login/register
     const [loading, setLoading] = useState(false);             // Controls loading spinner on submit
     const [error, setError] = useState(null);                  // Global error (like failed login)
 
@@ -34,7 +34,7 @@ const Login = ({ onBack, onLoginSuccess }) => {
     useEffect(() => {
         setError(null);
         setFormErrors({});
-    }, [isLogin]);
+    }, [isRegister]);
 
     // Updates form field and clears individual errors while typing
     const handleInputChange = (e) => {
@@ -55,13 +55,13 @@ const Login = ({ onBack, onLoginSuccess }) => {
     const validateForm = () => {
         const errors = {};
 
-        if (!isLogin) {
+        if (isRegister) {
             if (!formData.name.trim()) errors.name = 'Name is required';
             if (!formData.username.trim()) errors.username = 'Username is required';
             else if (formData.username.length < 3) errors.username = 'Username must be at least 3 characters';
         }
 
-        if (!isLogin) {
+        if (isRegister) {
             if (!formData.email.trim()) errors.email = 'Email is required';
             else if (!/\S+@\S+\.\S+/.test(formData.email)) errors.email = 'Email is invalid';
         } else {
@@ -71,7 +71,7 @@ const Login = ({ onBack, onLoginSuccess }) => {
         if (!formData.password) errors.password = 'Password is required';
         else if (formData.password.length < 8) errors.password = 'Password must be at least 8 characters';
 
-        if (!isLogin && formData.password !== formData.confirmPassword)
+        if (isRegister && formData.password !== formData.confirmPassword)
             errors.confirmPassword = 'Passwords do not match';
 
         setFormErrors(errors);
@@ -88,7 +88,7 @@ const Login = ({ onBack, onLoginSuccess }) => {
             setLoading(true);
             setError(null);
 
-            if (isLogin) {
+            if (!isRegister) {
                 const response = await apiService.login({
                     username: formData.username,
                     password: formData.password
@@ -133,16 +133,6 @@ const Login = ({ onBack, onLoginSuccess }) => {
         else window.history.back();
     };
 
-    // The component returns UI (JSX) which is omitted here for brevity.
-    // UI includes:
-    // - Background image and overlay
-    // - Logo & heading
-    // - Error message area
-    // - Form fields with validation
-    // - Submit button with loader
-    // - Social login buttons
-    // - Toggle to switch login/register
-
     return (
         <div className="min-h-screen flex items-center justify-center relative overflow-hidden">
             {/* Background Image */}
@@ -181,10 +171,10 @@ const Login = ({ onBack, onLoginSuccess }) => {
                         </span>
                     </div>
                     <h1 className="text-xl font-bold text-white mb-1">
-                        {isLogin ? 'Welcome Back' : 'Create Account'}
+                        {!isRegister ? 'Welcome Back' : 'Create Account'}
                     </h1>
                     <p className="text-sm text-gray-300">
-                        {isLogin ? 'Sign in to continue your coding journey' : 'Join the community of coders worldwide'}
+                        {!isRegister ? 'Sign in to continue your coding journey' : 'Join the community of coders worldwide'}
                     </p>
                 </div>
 
@@ -198,7 +188,7 @@ const Login = ({ onBack, onLoginSuccess }) => {
                 {/* Form */}
                 <div className="bg-black/40 backdrop-blur-md border border-green-400/20 rounded-xl p-6 shadow-2xl">
                     <form onSubmit={handleSubmit} className="space-y-4">
-                        {!isLogin && (
+                        {isRegister && (
                             <div>
                                 <label className="block text-xs font-medium text-gray-300 mb-1">
                                     Full Name
@@ -213,7 +203,7 @@ const Login = ({ onBack, onLoginSuccess }) => {
                                         className={`w-full pl-8 pr-3 py-2 bg-gray-900/50 border rounded-md text-white placeholder-gray-400 focus:outline-none focus:ring-1 transition-colors text-sm ${formErrors.name ? 'border-red-500 focus:border-red-500 focus:ring-red-500' : 'border-gray-600 focus:border-green-400 focus:ring-green-400'
                                             }`}
                                         placeholder="Enter your full name"
-                                        required={!isLogin}
+                                        required={isRegister}
                                     />
                                 </div>
                                 {formErrors.name && (
@@ -224,7 +214,7 @@ const Login = ({ onBack, onLoginSuccess }) => {
 
                         <div>
                             <label className="block text-xs font-medium text-gray-300 mb-1">
-                                {isLogin ? 'Username' : 'Username'}
+                                Username
                             </label>
                             <div className="relative">
                                 <User className="absolute left-2 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
@@ -235,7 +225,7 @@ const Login = ({ onBack, onLoginSuccess }) => {
                                     onChange={handleInputChange}
                                     className={`w-full pl-8 pr-3 py-2 bg-gray-900/50 border rounded-md text-white placeholder-gray-400 focus:outline-none focus:ring-1 transition-colors text-sm ${formErrors.username ? 'border-red-500 focus:border-red-500 focus:ring-red-500' : 'border-gray-600 focus:border-green-400 focus:ring-green-400'
                                         }`}
-                                    placeholder={isLogin ? "Enter your username" : "Choose a username"}
+                                    placeholder={!isRegister ? "Enter your username" : "Choose a username"}
                                     required
                                 />
                             </div>
@@ -244,7 +234,7 @@ const Login = ({ onBack, onLoginSuccess }) => {
                             )}
                         </div>
 
-                        {!isLogin && (
+                        {isRegister && (
                             <div>
                                 <label className="block text-xs font-medium text-gray-300 mb-1">
                                     Email Address
@@ -259,7 +249,7 @@ const Login = ({ onBack, onLoginSuccess }) => {
                                         className={`w-full pl-8 pr-3 py-2 bg-gray-900/50 border rounded-md text-white placeholder-gray-400 focus:outline-none focus:ring-1 transition-colors text-sm ${formErrors.email ? 'border-red-500 focus:border-red-500 focus:ring-red-500' : 'border-gray-600 focus:border-green-400 focus:ring-green-400'
                                             }`}
                                         placeholder="Enter your email"
-                                        required={!isLogin}
+                                        required={isRegister}
                                     />
                                 </div>
                                 {formErrors.email && (
@@ -297,7 +287,7 @@ const Login = ({ onBack, onLoginSuccess }) => {
                             )}
                         </div>
 
-                        {!isLogin && (
+                        {isRegister && (
                             <div>
                                 <label className="block text-xs font-medium text-gray-300 mb-1">
                                     Confirm Password
@@ -312,7 +302,7 @@ const Login = ({ onBack, onLoginSuccess }) => {
                                         className={`w-full pl-8 pr-3 py-2 bg-gray-900/50 border rounded-md text-white placeholder-gray-400 focus:outline-none focus:ring-1 transition-colors text-sm ${formErrors.confirmPassword ? 'border-red-500 focus:border-red-500 focus:ring-red-500' : 'border-gray-600 focus:border-green-400 focus:ring-green-400'
                                             }`}
                                         placeholder="Confirm your password"
-                                        required={!isLogin}
+                                        required={isRegister}
                                     />
                                 </div>
                                 {formErrors.confirmPassword && (
@@ -321,7 +311,7 @@ const Login = ({ onBack, onLoginSuccess }) => {
                             </div>
                         )}
 
-                        {!isLogin && (
+                        {isRegister && (
                             <div>
                                 <label className="block text-xs font-medium text-gray-300 mb-1">
                                     Admin Code
@@ -341,7 +331,7 @@ const Login = ({ onBack, onLoginSuccess }) => {
                             </div>
                         )}
 
-                        {isLogin && (
+                        {!isRegister && (
                             <div className="flex items-center justify-between">
                                 <label className="flex items-center">
                                     <input type="checkbox" className="rounded border-gray-600 text-green-400 focus:ring-green-400 bg-gray-900/50 w-3 h-3" />
@@ -355,17 +345,13 @@ const Login = ({ onBack, onLoginSuccess }) => {
 
                         <button
                             type="submit"
+                            className="w-full bg-gradient-to-r from-green-400 to-emerald-500 text-black py-2 rounded-full font-semibold hover:scale-105 transition-all duration-200 flex items-center justify-center"
                             disabled={loading}
-                            className="w-full bg-gradient-to-r from-green-400 to-emerald-500 text-black py-2 px-4 rounded-md font-semibold hover:scale-105 hover:shadow-lg hover:shadow-green-400/30 transition-all duration-200 text-sm disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none flex items-center justify-center"
                         >
                             {loading ? (
-                                <>
-                                    <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-                                    {isLogin ? 'Signing In...' : 'Creating Account...'}
-                                </>
-                            ) : (
-                                isLogin ? 'Sign In' : 'Create Account'
-                            )}
+                                <Loader2 className="w-5 h-5 animate-spin mr-2" />
+                            ) : null}
+                            {!isRegister ? 'Login' : 'Sign Up'}
                         </button>
                     </form>
 
@@ -393,18 +379,19 @@ const Login = ({ onBack, onLoginSuccess }) => {
                         </div>
                     </div>
 
-                    {/* Toggle Login/Signup */}
+                    {/* Toggle between login and register */}
                     <div className="mt-4 text-center">
-                        <p className="text-xs text-gray-300">
-                            {isLogin ? "Don't have an account?" : "Already have an account?"}
-                            <button
-                                type="button"
-                                onClick={() => setIsLogin(!isLogin)}
-                                className="ml-1 text-green-400 hover:text-green-300 transition-colors font-medium"
-                            >
-                                {isLogin ? 'Sign up' : 'Sign in'}
-                            </button>
-                        </p>
+                        {!isRegister ? (
+                            <span className="text-gray-300 text-sm">
+                                Don&apos;t have an account?{' '}
+                                <Link to="/auth/register" className="text-green-400 hover:underline">Sign up</Link>
+                            </span>
+                        ) : (
+                            <span className="text-gray-300 text-sm">
+                                Already have an account?{' '}
+                                <Link to="/auth/login" className="text-green-400 hover:underline">Log in</Link>
+                            </span>
+                        )}
                     </div>
                 </div>
             </div>

@@ -95,14 +95,7 @@ const Home = ({ onLoginClick, hideLoginButton = false, user, onLogout }) => {
 
     return (
         <div className="bg-black text-white overflow-x-hidden min-h-screen scrollbar-hide">
-            {/* Navigation Bar */}
-            <Navbar
-                isNavbarVisible={isNavbarVisible}
-                onLoginClick={onLoginClick}
-                hideLoginButton={hideLoginButton}
-                user={user}
-                onLogout={onLogout}
-            />
+
 
             {/* Hero Section */}
             <Homepage heroRef={heroRef} />
@@ -131,8 +124,8 @@ const Home = ({ onLoginClick, hideLoginButton = false, user, onLogout }) => {
                 
                 html::-webkit-scrollbar, body::-webkit-scrollbar {
                     display: none; /* Safari and Chrome */
-                }
-            `}</style>
+        }
+      `}</style>
         </div>
     );
 };
