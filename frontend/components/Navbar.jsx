@@ -16,6 +16,7 @@ import {
     LogOut
 } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import AdminPage from '../components/AdminPage';
 
 const Navbar = ({ isNavbarVisible, onLoginClick, hideLoginButton = false, user, onLogout }) => {
     // ========================================
@@ -50,7 +51,8 @@ const Navbar = ({ isNavbarVisible, onLoginClick, hideLoginButton = false, user, 
         {
             name: 'Admin Panel',
             icon: <Settings className="w-4 h-4" />,
-            description: 'Administrative tools and controls'
+            description: 'Administrative tools and controls',
+            href: '/admin',
         }
     ];
 

@@ -23,7 +23,7 @@ QuestRouter.get("/", getAllQuestions);
 QuestRouter.get("/:slug", getQuestionBySlug);
 
 // Future: Submit code for a question
-QuestRouter.post("/:slug/submission", verifyToken , submitCode);
+QuestRouter.post("/:slug/submission", verifyToken, submitCode);
 
 
 //  =================== ADMIN ROUTES ===================

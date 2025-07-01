@@ -169,6 +169,15 @@ class ApiService {
     isAuthenticated() {
         return !!this.getToken();
     }
+
+    /**
+     * Create a new question (admin only)
+     * @param {Object} questionData - The question data to send
+     * @returns {Promise<Object>} The created question
+     */
+    async createQuestion(questionData) {
+        return api.post('/practice/admin/create', questionData);
+    }
 }
 
 // ========================================

@@ -5,6 +5,8 @@ import HomePageLander from '../components/HomePageLander';
 import Login from '../components/Login';
 import Navbar from '../components/Navbar';
 import QuestionListPage from '../components/QuestionListPage';
+import AdminPage from '../components/AdminPage';
+import CreateQuestionPage from '../components/CreateQuestionPage';
 import apiService from './services/api';
 import './App.css';
 
@@ -40,9 +42,8 @@ function MainApp() {
   const handleLogout = () => {
     apiService.removeToken();
     setUser(null);
-    navigate('/', { replace: true }); // <- ensure forceful redirect
+    navigate('/');
   };
-
 
   if (loading) {
     return (
@@ -51,8 +52,6 @@ function MainApp() {
       </div>
     );
   }
-
-
 
   const hideNavbar = location.pathname.startsWith('/auth/login') || location.pathname.startsWith('/auth/register');
 
@@ -65,6 +64,8 @@ function MainApp() {
         <Route path="/auth/login" element={<Login onLoginSuccess={handleLoginSuccess} isRegister={false} />} />
         <Route path="/auth/register" element={<Login onLoginSuccess={handleLoginSuccess} isRegister={true} />} />
         <Route path="/questions" element={<QuestionListPage />} />
+        <Route path="/admin" element={user && user.isAdmin ? <AdminPage user={user} /> : <Navigate to="/" replace />} />
+        <Route path="/admin/create-new-question" element={user && user.isAdmin ? <CreateQuestionPage user={user} /> : <Navigate to="/" replace />} />
       </Routes>
     </>
   );

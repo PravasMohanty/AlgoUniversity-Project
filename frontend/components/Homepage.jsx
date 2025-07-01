@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import {
     Star,
     Play,
@@ -48,7 +49,7 @@ const Homepage = ({ heroRef }) => {
                     <div className="flex flex-col sm:flex-row gap-4 justify-center mb-12 animate-fade-in-up animation-delay-600">
                         <button className="bg-gradient-to-r from-green-400 to-emerald-500 text-black px-8 py-4 rounded-full text-lg font-semibold hover:scale-105 hover:shadow-xl hover:shadow-green-400/40 transition-all duration-300 flex items-center justify-center space-x-2">
                             <Play className="w-5 h-5" />
-                            <span>Start Coding Now</span>
+                            <Link to="/questions" className="text-inherit no-underline"><span>Start Coding Now</span></Link>
                         </button>
                         <button
                             onClick={scrollToFeatures}
