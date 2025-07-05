@@ -217,8 +217,12 @@ const AdminPage = () => {
                                             recentQuestions.map((item, index) => (
                                                 <div key={item._id || index} className="flex items-center justify-between p-4 bg-gray-700 rounded-lg border border-gray-600 hover:border-gray-500 transition-colors duration-200">
                                                     <div>
-                                                        <h4 className="text-gray-100 font-medium">{item.question}</h4>
-                                                        <p className="text-gray-400 text-sm">{item.createdAt ? new Date(item.createdAt).toLocaleString() : ''}</p>
+                                                        <h4 className="text-gray-100 font-medium">{item.titletag || item.question}</h4>
+
+                                                        <p className="text-gray-400 text-xs mb-1">
+                                                            {(item.tags || []).join(' ')}
+                                                        </p>
+                                                        <p className="text-gray-400 text-xs">{item.createdAt ? new Date(item.createdAt).toLocaleString() : ''}</p>
                                                     </div>
                                                     <span className={`px-2 py-1 rounded text-xs font-medium ${item.difficulty === 'Easy' ? 'bg-emerald-900/30 text-emerald-400 border border-emerald-600' :
                                                         item.difficulty === 'Medium' ? 'bg-orange-900/30 text-orange-400 border border-orange-600' :

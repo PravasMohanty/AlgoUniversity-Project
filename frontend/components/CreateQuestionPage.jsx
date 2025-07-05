@@ -8,13 +8,14 @@ const TAG_OPTIONS = [
 const DIFFICULTY_OPTIONS = ["Easy", "Medium", "Hard"];
 
 const CreateQuestionPage = () => {
-    const [question, setQuestion] = useState("");
+    const [description, setDescription] = useState("");
     const [difficulty, setDifficulty] = useState("Easy");
     const [tags, setTags] = useState([]);
     const [testcases, setTestcases] = useState([{ input: "", output: "", isVisible: true }]);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
     const [success, setSuccess] = useState(null);
+    const [titletag, setTitletag] = useState("");
     const navigate = useNavigate();
 
     const handleTestcaseChange = (idx, field, value) => {
@@ -41,7 +42,8 @@ const CreateQuestionPage = () => {
         setSuccess(null);
         try {
             await apiService.createQuestion({
-                question,
+                titletag,
+                description,
                 difficulty,
                 tags,
                 testcases
@@ -63,12 +65,23 @@ const CreateQuestionPage = () => {
                     {error && <div className="text-red-400 mb-2">{error}</div>}
                     {success && <div className="text-green-400 mb-2">{success}</div>}
                     <div>
-                        <label className="block text-gray-300 mb-2">Question Statement</label>
+                        <label className="block text-gray-300 mb-2">Question Title</label>
+                        <input
+                            className="w-full p-3 rounded bg-gray-900 border border-gray-700 text-gray-100"
+                            type="text"
+                            value={titletag}
+                            onChange={e => setTitletag(e.target.value)}
+                            placeholder="Enter question title (titletag)"
+                            required
+                        />
+                    </div>
+                    <div>
+                        <label className="block text-gray-300 mb-2">Question Description</label>
                         <textarea
                             className="w-full p-3 rounded bg-gray-900 border border-gray-700 text-gray-100"
                             rows={3}
-                            value={question}
-                            onChange={e => setQuestion(e.target.value)}
+                            value={description}
+                            onChange={e => setDescription(e.target.value)}
                             required
                         />
                     </div>

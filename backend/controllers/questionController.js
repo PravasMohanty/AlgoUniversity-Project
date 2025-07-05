@@ -9,13 +9,13 @@ const createQuestion = async (req, res) => {
       return res.status(403).json({ success: false, message: "Forbidden: Admins only" });
     }
 
-    const { question, difficulty, tags, testcases } = req.body;
+    const { titletag, description, difficulty, tags, testcases } = req.body;
 
-    if (!question || !difficulty || !tags || !testcases) {
+    if (!titletag || !description || !difficulty || !tags || !testcases) {
       return res.status(400).json({ message: "All fields are required" });
     }
 
-    const slug = slugify(question);
+    const slug = slugify(titletag);
 
     const existing = await Question.findOne({ slug });
     if (existing) {
@@ -23,7 +23,8 @@ const createQuestion = async (req, res) => {
     }
 
     const newQuestion = new Question({
-      question,
+      titletag,
+      description,
       difficulty,
       tags,
       slug,

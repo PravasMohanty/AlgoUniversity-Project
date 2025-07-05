@@ -7,6 +7,7 @@ import Navbar from '../components/Navbar';
 import QuestionListPage from '../components/QuestionListPage';
 import AdminPage from '../components/AdminPage';
 import CreateQuestionPage from '../components/CreateQuestionPage';
+import QuestionSolvePage from '../components/QuestionSolvePage';
 import apiService from './services/api';
 import './App.css';
 
@@ -66,6 +67,7 @@ function MainApp() {
         <Route path="/questions" element={<QuestionListPage />} />
         <Route path="/admin" element={user && user.isAdmin ? <AdminPage user={user} /> : <Navigate to="/" replace />} />
         <Route path="/admin/create-new-question" element={user && user.isAdmin ? <CreateQuestionPage user={user} /> : <Navigate to="/" replace />} />
+        <Route path="/question/:slug" element={<QuestionSolvePage />} />
       </Routes>
     </>
   );

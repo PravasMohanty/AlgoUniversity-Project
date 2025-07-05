@@ -18,6 +18,7 @@ const generateFile = (language, code) => {
   const langMap = {
     'cpp': 'cpp',
     'java': 'java',
+    'python': 'py',
     'py': 'py'
   }
 

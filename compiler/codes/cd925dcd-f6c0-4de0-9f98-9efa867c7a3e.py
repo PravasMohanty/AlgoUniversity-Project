@@ -1,2 +1,0 @@
-print("Haribol")
-print("Jaijagannath")

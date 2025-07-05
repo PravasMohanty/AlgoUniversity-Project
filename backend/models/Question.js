@@ -2,7 +2,11 @@ const mongoose = require('mongoose')
 const Schema = mongoose.Schema;
 
 const QuestionSchema = new Schema({
-    question: {
+    titletag: {
+        type: String,
+        required: true
+    },
+    description: {
         type: String,
         required: true
     },

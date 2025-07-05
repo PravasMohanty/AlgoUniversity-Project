@@ -1,5 +1,7 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Users, Code, ChevronRight } from 'lucide-react';
+import CodeEditor from './CodeEditor';
 
 const getDifficultyColor = (difficulty) => {
     switch (difficulty) {
@@ -11,6 +13,12 @@ const getDifficultyColor = (difficulty) => {
 };
 
 const QuestionBox = ({ question, index }) => {
+    const navigate = useNavigate();
+    const handleBoxClick = () => {
+        if (question.slug) {
+            navigate(`/question/${question.slug}`);
+        }
+    };
     return (
         <div
             className="group bg-gray-800 rounded-2xl shadow-lg hover:shadow-emerald-500/10 border border-gray-700 hover:border-emerald-400 transition-all duration-300 transform hover:-translate-y-1 p-6 cursor-pointer w-full"
@@ -18,13 +26,19 @@ const QuestionBox = ({ question, index }) => {
                 animationDelay: `${index * 100}ms`,
                 animation: 'fadeInUp 0.5s ease-out forwards'
             }}
+            onClick={handleBoxClick}
         >
             <div className="flex items-center justify-between w-full">
                 <div className="flex-1 w-full min-w-0">
                     <div className="flex items-center gap-4 mb-3">
-                        <h3 className="text-xl font-semibold text-gray-100 group-hover:text-emerald-400 transition-colors duration-200">
-                            {question.title || question.question}
-                        </h3>
+                        <div className="flex flex-col">
+                            <span className="text-xl font-bold text-gray-100 group-hover:text-emerald-400 transition-colors duration-200">
+                                {question.title || question.titletag || question.question}
+                            </span>
+                            {question.description && (
+                                <span className="text-gray-400 text-sm mt-1 line-clamp-2">{question.description}</span>
+                            )}
+                        </div>
                         <span className={`px-3 py-1 rounded-full text-sm font-medium ${getDifficultyColor(question.difficulty)}`}>
                             {question.difficulty}
                         </span>
