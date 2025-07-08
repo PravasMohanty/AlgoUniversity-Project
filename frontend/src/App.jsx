@@ -10,6 +10,9 @@ import CreateQuestionPage from '../components/CreateQuestionPage';
 import QuestionSolvePage from '../components/QuestionSolvePage';
 import apiService from './services/api';
 import './App.css';
+import Ide from '../components/Ide';
+import UserProfilePage from '../components/UserProfilePage';
+
 
 function MainApp() {
   const [user, setUser] = useState(null);
@@ -62,12 +65,15 @@ function MainApp() {
       <Routes>
         <Route path="/" element={<HomePageLander user={user} />} />
         <Route path="/login" element={<Navigate to="/auth/login" replace />} />
+        <Route path="/register" element={<Navigate to="/auth/register" replace />} />
         <Route path="/auth/login" element={<Login onLoginSuccess={handleLoginSuccess} isRegister={false} />} />
         <Route path="/auth/register" element={<Login onLoginSuccess={handleLoginSuccess} isRegister={true} />} />
         <Route path="/questions" element={<QuestionListPage />} />
         <Route path="/admin" element={user && user.isAdmin ? <AdminPage user={user} /> : <Navigate to="/" replace />} />
         <Route path="/admin/create-new-question" element={user && user.isAdmin ? <CreateQuestionPage user={user} /> : <Navigate to="/" replace />} />
         <Route path="/question/:slug" element={<QuestionSolvePage />} />
+        <Route path="/ide" element={<Ide />} />
+        <Route path="/profile" element={user ? <UserProfilePage /> : <Navigate to="/" replace />} />
       </Routes>
     </>
   );

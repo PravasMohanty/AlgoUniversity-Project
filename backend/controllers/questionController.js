@@ -112,9 +112,37 @@ const getQuestionBySlug = async (req, res) => {
   }
 };
 
+const getQuestionById = async (req, res) => {
+  const { Id } = req.params;
+
+  try {
+    const question = await Question.findOne({ Id });
+
+    if (!question) {
+      return res.status(404).json({ error: 'Question not found' });
+    }
+
+    // 🎯 Only return visible (sample) testcases
+    const sampleTestCases = await TestCase.find({
+      questionId: question._id,
+      isVisible: true
+    });
+
+    res.status(200).json({
+      question,
+      sampleTestCases
+    });
+
+  } catch (err) {
+    console.error('Error fetching question by slug:', err);
+    res.status(500).json({ error: 'Server error' });
+  }
+};
+
 module.exports = {
   getAllQuestions,
   createQuestion,
   deleteQuestion,
-  getQuestionBySlug
+  getQuestionBySlug,
+  getQuestionById
 };

@@ -6,7 +6,10 @@ dotenv.config();
 const GetUserProfile = async (req, res) => {
     try {
         const U_id = req.user.id;
-        const user = await User.findById(U_id);
+        const user = await User.findById(U_id).populate({
+            path: 'solved',
+            select: 'titletag difficulty slug'
+        });
 
         if (!user) {
             return res.status(404).send("User Not Found");

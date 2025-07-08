@@ -3,7 +3,8 @@ const {
   createQuestion,
   getAllQuestions,
   deleteQuestion,
-  getQuestionBySlug
+  getQuestionBySlug,
+  getQuestionById
   // submitCode (future submission controller)
 } = require('../controllers/questionController');
 
@@ -21,6 +22,8 @@ QuestRouter.get("/", getAllQuestions);
 
 // Get single question by slug (practice view)
 QuestRouter.get("/:slug", getQuestionBySlug);
+
+QuestRouter.get("/:Id", getQuestionById);
 
 // Future: Submit code for a question
 QuestRouter.post("/:slug/submission", verifyToken, submitCode);

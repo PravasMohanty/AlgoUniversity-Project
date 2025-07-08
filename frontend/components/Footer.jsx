@@ -5,6 +5,7 @@ import {
     Linkedin,
     Mail
 } from 'lucide-react';
+import { Link } from 'react-router-dom';
 
 const Footer = () => {
     return (
@@ -14,9 +15,7 @@ const Footer = () => {
                     {/* Logo & Description */}
                     <div className="md:col-span-1">
                         <div className="flex items-center space-x-3 mb-4">
-                            <div className="w-10 h-10 bg-gradient-to-r from-green-400 to-emerald-500 rounded-lg flex items-center justify-center">
-                                <span className="text-black font-bold text-lg">C</span>
-                            </div>
+                            <img src="/logo.png" alt="CodeForge Logo" className="w-14 h-10 " />
                             <span className="text-2xl font-bold bg-gradient-to-r from-green-400 to-emerald-400 bg-clip-text text-transparent">
                                 CodeForge
                             </span>
@@ -44,11 +43,25 @@ const Footer = () => {
                     <div>
                         <h3 className="text-white font-bold mb-4 text-lg">Product</h3>
                         <div className="space-y-3">
-                            {['Code Editor', 'Live Compiler', 'Pair Programming', 'Contests', 'Learning Hub'].map((item) => (
-                                <a key={item} href="#" className="block text-gray-400 hover:text-green-400 transition-colors">
-                                    {item}
-                                </a>
-                            ))}
+                            {['Code Editor', 'Coders Guild', 'Pair Programming', 'Contests', 'Learning Hub'].map((item) =>
+                                item === 'Code Editor' ? (
+                                    <Link
+                                        key={item}
+                                        to="/ide"
+                                        className="block text-gray-400 hover:text-green-400 transition-colors"
+                                    >
+                                        {item}
+                                    </Link>
+                                ) : (
+                                    <a
+                                        key={item}
+                                        href="#"
+                                        className="block text-gray-400 hover:text-green-400 transition-colors"
+                                    >
+                                        {item}
+                                    </a>
+                                )
+                            )}
                         </div>
                     </div>
 
@@ -79,7 +92,7 @@ const Footer = () => {
 
                 <div className="border-t border-gray-700/50 pt-8 flex flex-col md:flex-row justify-between items-center">
                     <p className="text-gray-500 mb-4 md:mb-0">
-                        © 2024 CodeForge. All rights reserved. Built with ❤️ for developers.
+                        © 2025 CodeForge. All rights reserved. Built with ❤️ for developers.
                     </p>
                     <div className="flex space-x-6">
                         <a href="#" className="text-gray-500 hover:text-green-400 transition-colors text-sm">

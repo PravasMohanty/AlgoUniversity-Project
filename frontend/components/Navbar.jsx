@@ -46,7 +46,8 @@ const Navbar = ({ isNavbarVisible, onLoginClick, hideLoginButton = false, user, 
         {
             name: 'User Profile',
             icon: <User className="w-4 h-4" />,
-            description: 'Manage your profile and achievements'
+            description: 'Manage your profile and achievements',
+            href: '/profile',
         },
         {
             name: 'Admin Panel',

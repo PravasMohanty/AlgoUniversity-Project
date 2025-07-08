@@ -31,8 +31,9 @@ app.post("/run", async (req, res) => {
 
         if (language === 'py') {
             output = await executePy(filePath, inputPath);
-        }
-        else {
+        } else if (language === 'java') {
+            output = await executeJava(filePath, inputPath);
+        } else {
             output = await executeCpp(filePath, inputPath);
         }
 

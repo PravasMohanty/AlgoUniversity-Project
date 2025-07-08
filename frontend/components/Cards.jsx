@@ -8,20 +8,21 @@ import {
     Target,
     ChevronRight
 } from 'lucide-react';
+import { Link } from 'react-router-dom';
 
 const Cards = () => {
     const codingCards = [
         {
             icon: <Code className="w-8 h-8" />,
             title: "Code Editor",
-            description: "Advanced IDE with syntax highlighting, auto-completion, and real-time collaboration features.",
+            description: "Advanced IDE with syntax highlighting, auto-completion, and AI support.",
             gradient: "from-blue-500 to-cyan-400",
             delay: "0ms"
         },
         {
             icon: <Zap className="w-8 h-8" />,
-            title: "Live Compiler",
-            description: "Instant code compilation and execution across multiple programming languages.",
+            title: "Coders' Guild",
+            description: "Connect with fellow coders and Discuss doubts.",
             gradient: "from-purple-500 to-pink-400",
             delay: "100ms"
         },
@@ -68,27 +69,35 @@ const Cards = () => {
                 </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-7xl mx-auto">
-                    {codingCards.map((card, index) => (
-                        <div
-                            key={index}
-                            className="group bg-gray-900/50 backdrop-blur-sm border border-gray-700/50 rounded-2xl p-8 hover:scale-105 hover:bg-gray-800/50 hover:border-green-400/30 hover:shadow-2xl hover:shadow-green-400/10 transition-all duration-500 cursor-pointer"
-                            style={{ animationDelay: card.delay }}
-                        >
-                            <div className={`w-16 h-16 bg-gradient-to-r ${card.gradient} rounded-2xl flex items-center justify-center mb-6 text-white group-hover:scale-110 transition-transform duration-300`}>
-                                {card.icon}
+                    {codingCards.map((card, index) => {
+                        const cardContent = (
+                            <div
+                                className="group bg-gray-900/50 backdrop-blur-sm border border-gray-700/50 rounded-2xl p-8 hover:scale-105 hover:bg-gray-800/50 hover:border-green-400/30 hover:shadow-2xl hover:shadow-green-400/10 transition-all duration-500 cursor-pointer"
+                                style={{ animationDelay: card.delay }}
+                            >
+                                <div className={`w-16 h-16 bg-gradient-to-r ${card.gradient} rounded-2xl flex items-center justify-center mb-6 text-white group-hover:scale-110 transition-transform duration-300`}>
+                                    {card.icon}
+                                </div>
+                                <h3 className="text-2xl font-bold mb-4 text-white group-hover:text-green-400 transition-colors duration-300">
+                                    {card.title}
+                                </h3>
+                                <p className="text-gray-300 leading-relaxed mb-6">
+                                    {card.description}
+                                </p>
+                                <div className="flex items-center text-green-400 group-hover:translate-x-2 transition-transform duration-300">
+                                    <span className="font-medium">Learn More</span>
+                                    <ChevronRight className="w-4 h-4 ml-1" />
+                                </div>
                             </div>
-                            <h3 className="text-2xl font-bold mb-4 text-white group-hover:text-green-400 transition-colors duration-300">
-                                {card.title}
-                            </h3>
-                            <p className="text-gray-300 leading-relaxed mb-6">
-                                {card.description}
-                            </p>
-                            <div className="flex items-center text-green-400 group-hover:translate-x-2 transition-transform duration-300">
-                                <span className="font-medium">Learn More</span>
-                                <ChevronRight className="w-4 h-4 ml-1" />
-                            </div>
-                        </div>
-                    ))}
+                        );
+                        return card.title === 'Code Editor' ? (
+                            <Link to="/ide" key={index}>
+                                {cardContent}
+                            </Link>
+                        ) : (
+                            <div key={index}>{cardContent}</div>
+                        );
+                    })}
                 </div>
             </div>
         </section>

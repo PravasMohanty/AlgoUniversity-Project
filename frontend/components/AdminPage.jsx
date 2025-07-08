@@ -7,6 +7,8 @@ const AdminPage = () => {
     const [questions, setQuestions] = useState([]);
     const [loading, setLoading] = useState(true);
     const [userCount, setUserCount] = useState(null);
+    const [showDeleteModal, setShowDeleteModal] = useState(false);
+    const [questionToDelete, setQuestionToDelete] = useState(null);
 
     const sidebarItems = [
         { icon: BarChart3, label: 'Dashboard', active: false },
@@ -56,8 +58,52 @@ const AdminPage = () => {
         }
     }
 
+    const handleQuestionClick = (question) => {
+        setQuestionToDelete(question);
+        setShowDeleteModal(true);
+    };
+
+    const handleDeleteQuestion = async (questionId) => {
+        try {
+            const token = localStorage.getItem('token');
+            const response = await fetch(`http://localhost:5000/practice/admin/delete/${questionId}`, {
+                method: 'DELETE',
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                    'Content-Type': 'application/json'
+                }
+            });
+            let data;
+            const contentType = response.headers.get('content-type');
+            if (contentType && contentType.includes('application/json')) {
+                data = await response.json();
+            } else {
+                const text = await response.text();
+                alert("Server error: " + text);
+                setShowDeleteModal(false);
+                setQuestionToDelete(null);
+                return;
+            }
+            if (data.success) {
+                setQuestions(prev => prev.filter(q => q._id !== questionId));
+            } else {
+                alert(data.message || "Failed to delete question.");
+            }
+        } catch (error) {
+            alert("Error deleting question: " + error.message);
+        }
+        setShowDeleteModal(false);
+        setQuestionToDelete(null);
+    };
+
+    const handleCancelDelete = () => {
+        setShowDeleteModal(false);
+        setQuestionToDelete(null);
+    };
+
     return (
-        <div className="min-h-screen bg-gradient-to-br from-gray-900 to-black flex pt-16">
+        <div className="h-screen bg-gradient-to-br from-gray-900 to-black flex pt-16 overflow-hidden">
+
             {/* Sidebar */}
             <div className={`fixed inset-y-0 left-0 z-30 w-64 bg-gray-900 border-r border-gray-700 transform ${sidebarOpen ? 'translate-x-0' : '-translate-x-full'} transition-transform duration-300 ease-in-out lg:translate-x-0 lg:static lg:inset-0`}>
                 <div className="flex items-center justify-between h-16 px-6 border-b border-gray-700">
@@ -187,13 +233,7 @@ const AdminPage = () => {
                                     </div>
 
                                     <div className="mt-8 w-full">
-                                        <div className="bg-gray-700 rounded-lg p-4 border border-gray-600">
-                                            <p className="text-gray-300 text-sm font-medium">Quick Actions</p>
-                                            <div className="mt-2 flex gap-2">
-                                                <span className="px-2 py-1 bg-gray-600 text-gray-300 rounded text-xs">Draft</span>
-                                                <span className="px-2 py-1 bg-emerald-600 text-white rounded text-xs">Publish</span>
-                                            </div>
-                                        </div>
+
                                     </div>
                                 </Link>
                             </div>
@@ -203,19 +243,17 @@ const AdminPage = () => {
                                 <div className="bg-gray-800 rounded-2xl p-6 border border-gray-700 h-full min-h-[400px]">
                                     <div className="flex items-center justify-between mb-6">
                                         <h3 className="text-xl font-semibold text-gray-100">Recent Questions</h3>
-                                        <button className="text-emerald-400 hover:text-emerald-300 text-sm font-medium">
-                                            View All
-                                        </button>
+
                                     </div>
 
-                                    <div className="space-y-4">
+                                    <div className="space-y-4 max-h-70 overflow-y-auto pr-2">
                                         {loading ? (
                                             <div className="text-gray-400">Loading...</div>
                                         ) : recentQuestions.length === 0 ? (
                                             <div className="text-gray-400">No questions found.</div>
                                         ) : (
                                             recentQuestions.map((item, index) => (
-                                                <div key={item._id || index} className="flex items-center justify-between p-4 bg-gray-700 rounded-lg border border-gray-600 hover:border-gray-500 transition-colors duration-200">
+                                                <div key={item._id || index} className="flex items-center justify-between p-4 bg-gray-700 rounded-lg border border-gray-600 hover:border-gray-500 transition-colors duration-200 cursor-pointer" onClick={() => handleQuestionClick(item)}>
                                                     <div>
                                                         <h4 className="text-gray-100 font-medium">{item.titletag || item.question}</h4>
 
@@ -247,6 +285,30 @@ const AdminPage = () => {
                     className="fixed inset-0 bg-black bg-opacity-50 z-40 lg:hidden"
                     onClick={() => setSidebarOpen(false)}
                 />
+            )}
+
+            {/* Delete Question Modal */}
+            {showDeleteModal && questionToDelete && (
+                <div className="fixed inset-0 z-50 flex items-center justify-center" style={{ background: 'rgba(0,0,0,0.35)' }}>
+                    <div className="bg-gray-800 rounded-lg p-8 shadow-lg flex flex-col items-center">
+                        <h2 className="text-xl font-bold text-white mb-4">Delete Question</h2>
+                        <p className="text-gray-200 mb-6">Are you sure you want to delete the question:<br /><span className="font-semibold text-emerald-400">{questionToDelete.titletag || questionToDelete.question}</span>?</p>
+                        <div className="flex gap-4">
+                            <button
+                                className="px-4 py-2 bg-red-600 hover:bg-red-500 text-white rounded-lg font-semibold"
+                                onClick={() => handleDeleteQuestion(questionToDelete._id)}
+                            >
+                                Delete
+                            </button>
+                            <button
+                                className="px-4 py-2 bg-gray-600 hover:bg-gray-500 text-white rounded-lg font-semibold"
+                                onClick={handleCancelDelete}
+                            >
+                                Cancel
+                            </button>
+                        </div>
+                    </div>
+                </div>
             )}
         </div>
     );

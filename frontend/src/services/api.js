@@ -22,6 +22,19 @@ const api = axios.create({
     timeout: 10000, // 10 second timeout
 });
 
+// const handleRunCode = async (code, language, userInput) => {
+//     try {
+//         const response = await axios.post('http://localhost:8100/run', {
+//             code,
+//             language,
+//             input: userInput
+//         });
+//         setOutput(response.data.output || response.data.error || "No output");
+//     } catch (err) {
+//         setOutput(err.response?.data?.error || "Error connecting to backend");
+//     }
+// };
+
 // ========================================
 // Request Interceptor
 // ========================================

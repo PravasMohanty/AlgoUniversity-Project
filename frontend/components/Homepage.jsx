@@ -90,9 +90,11 @@ const Homepage = ({ heroRef }) => {
                     <p className="text-xl text-gray-300 mb-8">
                         Join thousands of developers who are already building the future with CodeForge.
                     </p>
-                    <button className="bg-gradient-to-r from-green-400 to-emerald-500 text-black px-12 py-4 rounded-full text-xl font-bold hover:scale-105 hover:shadow-2xl hover:shadow-green-400/40 transition-all duration-300">
-                        Get Started Free
-                    </button>
+                    <Link to="/register" className="text-inherit no-underline">
+                        <button className="bg-gradient-to-r from-green-400 to-emerald-500 text-black px-12 py-4 rounded-full text-xl font-bold hover:scale-105 hover:shadow-2xl hover:shadow-green-400/40 transition-all duration-300">
+                            Get Started Free
+                        </button>
+                    </Link>
                 </div>
             </section>
         </>
