@@ -10,6 +10,7 @@ const DBConnection = require('../database/db');
 const userRouter = require('../routes/userRoutes');
 const QuestRouter = require('../routes/QuestionRoutes');
 const CompileRouter = require('../routes/CompileRouter');
+const AiRouter = require('../routes/AiRouter');
 
 
 
@@ -25,6 +26,7 @@ app.use("/auth", authRouter);
 app.use("/user", userRouter);
 app.use("/practice", QuestRouter)
 app.use("/compile", CompileRouter)
+app.use("/ai-review", AiRouter);
 
 app.listen(process.env.PORT, () => {
     console.log(`Listening on port ${process.env.PORT}`);

@@ -1,14 +1,15 @@
 import React, { useState } from 'react';
+import ReactMarkdown from 'react-markdown';
 import Editor from '@monaco-editor/react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 
 
+
 const LANGUAGES = [
     { label: 'C++', value: 'cpp' },
     { label: 'Python', value: 'py' },
-    { label: 'Java', value: 'java' },
-    { label: 'JavaScript', value: 'javascript' },
+
 ];
 
 function Ide() {
@@ -33,10 +34,10 @@ function Ide() {
         };
 
         try {
-            const { data } = await axios.post("http://localhost:8100/run", payload);
+            const { data } = await axios.post(import.meta.env.VITE_COMPILER_URL, payload);
             setOutput(data.output || data.error || "No output");
         } catch (error) {
-            setOutput('Error executing code, error: ' + error.message);
+            setOutput("Oops! Looks like there's a error in the code ...");
         }
     };
 
@@ -48,17 +49,22 @@ function Ide() {
         setCode(value);
     };
 
-    const generateAIReview = () => {
-        const reviews = [
-            "Code structure looks good. Consider adding error handling for robustness.",
-            "Well-formatted code. You might want to add comments for better readability.",
-            "Good use of functions. Consider using const/let instead of var for better scoping.",
-            "Clean implementation. Consider adding input validation if this handles user data.",
-            "Nice work! The code is readable and follows good practices."
-        ];
+    const generateAIReview = async () => {
+        const payload = {
+            code,
+            language
+        };
 
-        const randomReview = reviews[Math.floor(Math.random() * reviews.length)];
-        setAiReview(randomReview);
+        try {
+            const { data } = await axios.post(import.meta.env.VITE_BACKEND_URL, payload);
+            if (data.success) {
+                setAiReview(data.review);
+            } else {
+                setAiReview('AI review failed: ' + (data.error || 'Unknown error'));
+            }
+        } catch (error) {
+            setAiReview('Error in AI review, error: ' + error.message);
+        }
     };
 
     return (
@@ -151,14 +157,14 @@ function Ide() {
                         onChange={(e) => setUserInput(e.target.value)}
                         placeholder="Enter your input here..."
                         className="flex-1 p-3 rounded bg-gray-800 border border-gray-700 text-gray-100 resize-none outline-none font-mono text-sm"
-                        style={{ minHeight: '120px' }}
+                        style={{ minHeight: '120px', maxHeight: '180px', overflow: 'auto' }}
                     />
                 </div>
 
                 {/* Output Section */}
                 <div className="flex-1 flex flex-col">
                     <label className="block text-gray-300 mb-2">Output</label>
-                    <div className="flex-1 bg-gray-800 rounded border border-gray-700 text-gray-200 p-3 overflow-auto">
+                    <div className="flex-1 bg-gray-800 rounded border border-gray-700 text-gray-200 p-3 overflow-auto" style={{ maxHeight: '180px' }}>
                         <pre className="whitespace-pre-wrap font-mono text-sm">{output || 'Output will appear here...'}</pre>
                     </div>
                 </div>
@@ -166,13 +172,9 @@ function Ide() {
                 {/* AI Review Section */}
                 <div className="flex-1 flex flex-col">
                     <label className="block text-gray-300 mb-2">AI Review</label>
-                    <textarea
-                        value={aiReview}
-                        onChange={(e) => setAiReview(e.target.value)}
-                        placeholder="AI review will appear here..."
-                        className="flex-1 p-3 rounded bg-gray-800 border border-gray-700 text-gray-100 resize-none outline-none text-sm"
-                        style={{ minHeight: '120px' }}
-                    />
+                    <div className="flex-1 bg-gray-800 rounded border border-gray-700 text-gray-100 p-3 overflow-auto" style={{ maxHeight: '180px' }}>
+                        <ReactMarkdown>{aiReview || 'AI review will appear here...'}</ReactMarkdown>
+                    </div>
                 </div>
             </div>
         </div>
