@@ -5,7 +5,7 @@ const path = require("path")
 const executePy = (filepath, inputpath) => {
     return new Promise((resolve, reject) => {
         exec(
-            `python "${filepath}" < "${inputpath}"`,
+            `python3 "${filepath}" < "${inputpath}"`,
             (error, stdout, stderr) => {
                 if (error) {
                     reject({ error, stderr });
