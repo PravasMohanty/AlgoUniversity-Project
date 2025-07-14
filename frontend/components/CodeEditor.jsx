@@ -25,7 +25,7 @@ const CodeEditor = ({ question }) => {
         try {
             setOutput("Submitting...");
             const token = localStorage.getItem('token');
-            const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000';
+            const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://34.226.245.51:5000';
             const response = await axios.post(
                 `${API_BASE_URL}/practice/${question.slug}/submission`,
                 {
@@ -65,7 +65,7 @@ const CodeEditor = ({ question }) => {
         };
 
         try {
-            const COMPILER_URL = import.meta.env.VITE_COMPILER_URL || 'http://localhost:8100';
+            const COMPILER_URL = import.meta.env.VITE_COMPILER_URL || 'http://34.226.245.51:8100';
             const { data } = await axios.post(`${COMPILER_URL}`, payload);
             setOutput(data.output);
         } catch (error) {
