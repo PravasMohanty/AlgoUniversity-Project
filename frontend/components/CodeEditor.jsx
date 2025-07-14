@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Editor from '@monaco-editor/react';
 import axios from 'axios';
 
@@ -15,6 +15,17 @@ const CodeEditor = ({ question }) => {
     const [language, setLanguage] = useState('cpp');
     const [output, setOutput] = useState('');
     const [userInput, setUserInput] = useState('');
+
+    // Set userInput to first test case input when question changes
+    useEffect(() => {
+        if (question && question.examples && question.examples.length > 0) {
+            setUserInput(question.examples[0].input || '');
+        } else if (question && question.sampleTestCases && question.sampleTestCases.length > 0) {
+            setUserInput(question.sampleTestCases[0].input || '');
+        } else {
+            setUserInput('');
+        }
+    }, [question]);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -73,6 +84,7 @@ const CodeEditor = ({ question }) => {
         }
     };
 
+
     const handleEditorDidMount = (editor, monaco) => {
         // Editor is mounted and ready
         console.log('Editor mounted');
@@ -113,10 +125,26 @@ const CodeEditor = ({ question }) => {
                         <button type="button" onClick={handleRun} className="py-2 px-4 bg-blue-600 hover:bg-blue-500 text-white font-bold rounded-lg transition shadow">Run Code</button>
                     </div>
                 </div>
-                <div className="mt-2 bg-gray-800 rounded-lg p-2 border border-gray-700 text-gray-200 min-h-[170px]">
-                    <strong>Output :</strong>
-                    <pre className="whitespace-pre-wrap mt-2">{output || ''}</pre>
+                {/* Input and Output Boxes */}
+                <div className="mt-2 grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div className="bg-gray-800 rounded-lg p-2 border border-gray-700 text-gray-200">
+                        <label className="block text-gray-300 mb-1">Input</label>
+                        <textarea
+                            className="w-full h-32 min-h-[80px] bg-gray-900 border border-gray-700 rounded p-2 text-gray-100 resize-none overflow-auto appearance-none focus:outline-none focus:ring-0"
+                            value={userInput}
+                            onChange={e => setUserInput(e.target.value)}
+                        />
+                    </div>
+                    <div className="bg-gray-800 rounded-lg p-2 border border-gray-700 text-gray-200">
+                        <label className="block text-gray-300 mb-1">Output</label>
+                        <textarea
+                            className="w-full h-32 min-h-[80px] bg-gray-900 border border-gray-700 rounded p-2 text-gray-100 resize-none overflow-auto appearance-none focus:outline-none focus:ring-0"
+                            value={output || ''}
+                            readOnly
+                        />
+                    </div>
                 </div>
+
             </form>
         </div>
     );

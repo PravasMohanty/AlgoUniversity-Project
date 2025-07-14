@@ -37,8 +37,8 @@ const QuestionSolvePage = () => {
     if (!question) return null;
 
     return (
-        <div className="w-full bg-gradient-to-br from-gray-900 to-black flex flex-col items-stretch" >
-            <div className="w-full max-w-9xl bg-gray-900 pt-10 shadow-lg border border-gray-700 p-0 flex flex-col md:flex-row ">
+        <div className="w-full bg-gradient-to-br from-gray-900 to-black flex flex-col items-stretch min-h-[80vh] " >
+            <div className="w-full max-w-9xl bg-gray-900 pt-10 shadow-lg border border-gray-700 p-0 flex flex-col md:flex-row min-h-[80vh] ">
                 {/* Left: Question Details */}
                 <div className="md:w-5/12 w-full p-8 border-b md:border-b-0 md:border-r border-gray-700">
                     <h1 className="text-3xl font-extrabold text-emerald-400 mb-2">{question.titletag || question.title || question.question}</h1>
