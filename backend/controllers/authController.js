@@ -52,7 +52,7 @@ const Login = async (req, res) => {
 
 const Register = async (req, res) => {
     try {
-        const { name, username, email, password , adminKey } = req.body;
+        const { name, username, email, password, adminKey } = req.body;
 
         if (!name || !username || !email || !password) {
             return res.status(400).send("Please enter all fields");
@@ -75,7 +75,7 @@ const Register = async (req, res) => {
 
         if (adminKey === process.env.MASTER_ADMIN_CODE) {
             UserObj.isAdmin = true;
-        }        
+        }
 
         await UserObj.save();
 

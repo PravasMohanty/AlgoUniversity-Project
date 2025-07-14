@@ -1,5 +1,8 @@
 // Import axios for making HTTP requests to the compiler service
 const axios = require('axios');
+const dotenv = require('dotenv')
+
+dotenv.config()
 
 // Controller function to handle code compilation requests
 const compileCode = async (req, res) => {
@@ -12,7 +15,7 @@ const compileCode = async (req, res) => {
     }
     try {
         // Send a POST request to the compiler service API
-        const response = await axios.post("http://localhost:8100/run", {
+        const response = await axios.post(`${process.env.COMPILER_URL}/run`, {
             code,
             language,
             input

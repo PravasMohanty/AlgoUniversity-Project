@@ -3,6 +3,9 @@ const Submission = require('../models/Submission');
 const TestCase = require('../models/TestCase');
 const axios = require('axios');
 const User = require('../models/User');
+const dotenv = require('dotenv')
+
+dotenv.config()
 
 const submitCode = async (req, res) => {
     const { slug } = req.params;
@@ -31,7 +34,7 @@ const submitCode = async (req, res) => {
             const input = test.input;
             const expectedOutput = test.output.trim();
 
-            const response = await axios.post("http://localhost:8100/run", {
+            const response = await axios.post(`${process.env.COMPILER_URL}/run`, {
                 code,
                 language,
                 input
