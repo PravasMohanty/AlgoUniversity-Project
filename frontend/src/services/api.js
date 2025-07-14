@@ -7,7 +7,7 @@
 import axios from 'axios';
 
 // Configuration
-const API_BASE_URL = 'http://localhost:5000'; // Update this with your backend port
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000'; // Uses environment variable with fallback
 
 // ========================================
 // Axios Instance Configuration
@@ -21,19 +21,6 @@ const api = axios.create({
     },
     timeout: 10000, // 10 second timeout
 });
-
-// const handleRunCode = async (code, language, userInput) => {
-//     try {
-//         const response = await axios.post('http://localhost:8100/run', {
-//             code,
-//             language,
-//             input: userInput
-//         });
-//         setOutput(response.data.output || response.data.error || "No output");
-//     } catch (err) {
-//         setOutput(err.response?.data?.error || "Error connecting to backend");
-//     }
-// };
 
 // ========================================
 // Request Interceptor

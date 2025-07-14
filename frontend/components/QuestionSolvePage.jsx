@@ -14,7 +14,8 @@ const QuestionSolvePage = () => {
             setLoading(true);
             setError(null);
             try {
-                const res = await fetch(`http://localhost:5000/practice/${slug}`);
+                const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000';
+                const res = await fetch(`${API_BASE_URL}/practice/${slug}`);
                 const data = await res.json();
                 if (data && data.question) {
                     setQuestion(data.question);

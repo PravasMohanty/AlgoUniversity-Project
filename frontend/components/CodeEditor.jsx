@@ -25,8 +25,9 @@ const CodeEditor = ({ question }) => {
         try {
             setOutput("Submitting...");
             const token = localStorage.getItem('token');
+            const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000';
             const response = await axios.post(
-                `http://localhost:5000/practice/${question.slug}/submission`,
+                `${API_BASE_URL}/practice/${question.slug}/submission`,
                 {
                     code,
                     language
@@ -64,7 +65,8 @@ const CodeEditor = ({ question }) => {
         };
 
         try {
-            const { data } = await axios.post("http://localhost:8100/run", payload);
+            const COMPILER_URL = import.meta.env.VITE_COMPILER_URL || 'http://localhost:8100';
+            const { data } = await axios.post(`${COMPILER_URL}`, payload);
             setOutput(data.output);
         } catch (error) {
             setOutput('Error executing code, error: ' + error.message);

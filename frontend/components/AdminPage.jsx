@@ -21,7 +21,8 @@ const AdminPage = () => {
         const fetchQuestions = async () => {
             setLoading(true);
             try {
-                const response = await fetch('http://localhost:5000/practice');
+                const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000';
+                const response = await fetch(`${API_BASE_URL}/practice`);
                 const data = await response.json();
                 setQuestions(data || []);
             } catch (error) {
@@ -33,7 +34,7 @@ const AdminPage = () => {
 
         const fetchUserCount = async () => {
             try {
-                const response = await fetch('http://localhost:5000/user/count');
+                const response = await fetch(`${API_BASE_URL}/user/count`);
                 const data = await response.json();
                 setUserCount(data.count);
             } catch (error) {
@@ -66,7 +67,7 @@ const AdminPage = () => {
     const handleDeleteQuestion = async (questionId) => {
         try {
             const token = localStorage.getItem('token');
-            const response = await fetch(`http://localhost:5000/practice/admin/delete/${questionId}`, {
+            const response = await fetch(`${API_BASE_URL}/practice/admin/delete/${questionId}`, {
                 method: 'DELETE',
                 headers: {
                     'Authorization': `Bearer ${token}`,
