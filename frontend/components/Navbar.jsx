@@ -49,12 +49,13 @@ const Navbar = ({ isNavbarVisible, onLoginClick, hideLoginButton = false, user, 
             description: 'Manage your profile and achievements',
             href: '/profile',
         },
-        {
+        // Only show Admin Panel if user is admin
+        ...(user?.isAdmin ? [{
             name: 'Admin Panel',
             icon: <Settings className="w-4 h-4" />,
             description: 'Administrative tools and controls',
             href: '/admin',
-        }
+        }] : [])
     ];
 
     // ========================================

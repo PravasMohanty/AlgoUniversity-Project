@@ -21,7 +21,7 @@ const AdminPage = () => {
         const fetchQuestions = async () => {
             setLoading(true);
             try {
-                const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://34.226.245.51:5000';
+                const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://44.198.131.81:5000';
                 const response = await fetch(`${API_BASE_URL}/practice`);
                 const data = await response.json();
                 setQuestions(data || []);
@@ -34,6 +34,7 @@ const AdminPage = () => {
 
         const fetchUserCount = async () => {
             try {
+                const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://44.198.131.81:5000';
                 const response = await fetch(`${API_BASE_URL}/user/count`);
                 const data = await response.json();
                 setUserCount(data.count);
