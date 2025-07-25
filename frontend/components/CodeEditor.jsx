@@ -1,13 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import Editor from '@monaco-editor/react';
 import axios from 'axios';
-
+import boilerplate from './boilerplate.json';
 // import { runCode } from '../src/services/api';
 
 const LANGUAGES = [
     { label: 'C++', value: 'cpp' },
-    { label: 'Python', value: 'py' },
-    { label: 'Java', value: 'java' },
+    { label: 'Python', value: 'py' }
 ];
 
 const CodeEditor = ({ question }) => {
@@ -26,6 +25,10 @@ const CodeEditor = ({ question }) => {
             setUserInput('');
         }
     }, [question]);
+
+    useEffect(() => {
+        setCode(boilerplate[language === 'py' ? 'python' : language]);
+    }, [language]);
 
     const handleSubmit = async (e) => {
         e.preventDefault();

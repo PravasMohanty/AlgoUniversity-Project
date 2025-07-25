@@ -1,9 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import ReactMarkdown from 'react-markdown';
 import Editor from '@monaco-editor/react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
-
+import boilerplate from './boilerplate.json';
 
 
 const LANGUAGES = [
@@ -11,6 +11,8 @@ const LANGUAGES = [
     { label: 'Python', value: 'py' },
 
 ];
+
+
 
 function Ide() {
     const [code, setCode] = useState('');
@@ -20,6 +22,10 @@ function Ide() {
     const [aiReview, setAiReview] = useState('');
     const [showAuthModal, setShowAuthModal] = useState(false);
     const navigate = useNavigate();
+
+    useEffect(() => {
+        setCode(boilerplate[language === 'py' ? 'python' : language]);
+    }, [language]);
 
     const handleRun = async () => {
         const token = localStorage.getItem('token');
