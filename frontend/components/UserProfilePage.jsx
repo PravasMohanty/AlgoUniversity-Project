@@ -12,7 +12,7 @@ const UserProfilePage = () => {
       setError('');
       try {
         const token = localStorage.getItem('token');
-        const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://34.226.245.51:5000';
+        const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://44.198.131.81:5000';
         const response = await fetch(`${API_BASE_URL}/user/profile`, {
           headers: { 'Authorization': `Bearer ${token}` }
         });

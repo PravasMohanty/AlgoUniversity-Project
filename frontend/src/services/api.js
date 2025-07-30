@@ -7,7 +7,7 @@
 import axios from 'axios';
 
 // Configuration
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://34.226.245.51:5000'; // Uses environment variable with fallback
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://44.198.131.81:5000'; // Uses environment variable with fallback
 
 // ========================================
 // Axios Instance Configuration
