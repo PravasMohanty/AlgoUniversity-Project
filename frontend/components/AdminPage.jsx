@@ -67,6 +67,7 @@ const AdminPage = () => {
 
     const handleDeleteQuestion = async (questionId) => {
         try {
+            const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://44.198.131.81:5000';
             const token = localStorage.getItem('token');
             const response = await fetch(`${API_BASE_URL}/practice/admin/delete/${questionId}`, {
                 method: 'DELETE',
